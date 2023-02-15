@@ -1,13 +1,17 @@
 module.exports = function check(str, bracketsConfig) {
-  let obj = Object.fromEntries(bracketsConfig);
-  let keyStr = Object.keys(obj);
+  const bracketsConfigReverse = bracketsConfig.map((item) => {
+    if(typeof item === "object") {
+      return [...item].reverse();
+    }
+  });
+  let obj = Object.fromEntries(bracketsConfigReverse);
+  let open_bracets = Object.values(obj);
   let result = [];
-  
 
   for (let i = 0; i < str.length; i++) {
     let currentSimbol = str[i];
 
-    if (keyStr.includes(currentSimbol[i])) {
+    if (open_bracets.includes(currentSimbol)) {
       result.push(currentSimbol);
     } else {
       if (result.length === 0) {
@@ -21,9 +25,7 @@ module.exports = function check(str, bracketsConfig) {
       } else {
         return false;
       }
-
     }
   }
-
   return result.length === 0;
 }
